@@ -19,6 +19,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import axios from "axios";
+import config from "../../config/api";
 
 const ALStreamPrediction = () => {
   const [formData, setFormData] = useState({
@@ -140,7 +141,7 @@ const ALStreamPrediction = () => {
     e.preventDefault();
 
     axios
-      .post("http://127.0.0.1:8000/predict", {
+      .post(`${config.API_URL}/predict`, {
         ol_math: formData.olGrades.Mathematics,
         ol_science: formData.olGrades.Science,
         ol_sinhala: formData.olGrades.Sinhala,
