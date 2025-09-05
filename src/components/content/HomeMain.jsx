@@ -415,7 +415,7 @@ const ALStreamPrediction = () => {
       case 3: // 4th place
         return "bg-purple-200";
       default:
-        return "bg-gray-600";
+        return "bg-purple-100";
     }
   };
 
@@ -430,7 +430,7 @@ const ALStreamPrediction = () => {
       case 3: // 4th place
         return "border-purple-200";
       default:
-        return "border-gray-200";
+        return "border-purple-100";
     }
   };
 
@@ -445,7 +445,7 @@ const ALStreamPrediction = () => {
       case 3: // 4th place
         return "text-purple-300";
       default:
-        return "text-gray-600";
+        return "text-purple-200";
     }
   };
 
@@ -1239,7 +1239,7 @@ const ALStreamPrediction = () => {
                       <button
                         type="button"
                         onClick={handleSubmit}
-                        disabled={isSubmitted}
+                        // disabled={isSubmitted}
                         className={`flex items-center gap-3 px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl ${
                           isSubmitted
                             ? "bg-gray-400 text-white cursor-not-allowed"
