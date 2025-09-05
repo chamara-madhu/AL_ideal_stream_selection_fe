@@ -61,12 +61,12 @@ const ALStreamPrediction = () => {
     favoriteOLSubject: "",
     leastFavoriteOLSubject: "",
     participatedSports: "",
-    sportsTypes: [],
+    sportsTypes: "",
     participatedClubs: "",
     enjoysCreative: "",
     leadershipRole: "",
     learningStyle: "",
-    strengths: [],
+    strengths: "",
     preferredCareer: "",
   });
 
