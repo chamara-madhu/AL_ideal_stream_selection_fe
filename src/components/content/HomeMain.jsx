@@ -5,18 +5,15 @@ import {
   Award,
   Target,
   Send,
-  GraduationCap,
   Brain,
   TrendingUp,
   CheckCircle,
   Trophy,
-  Lightbulb,
   Star,
   Briefcase,
   Microscope,
   Calculator,
   Palette,
-  BarChart3,
 } from "lucide-react";
 import axios from "axios";
 import config from "../../config/api";
@@ -30,7 +27,31 @@ const ALStreamPrediction = () => {
       English: "",
       Commerce: "",
       ICT: "",
-      Buddhism: "",
+      History: "",
+      Arts: "",
+      Drama: "",
+      Music: "",
+      Dancing: "",
+    },
+    favoriteOLSubject: "",
+    leastFavoriteOLSubject: "",
+    participatedSports: "",
+    sportsTypes: [],
+    participatedClubs: "",
+    enjoysCreative: "",
+    leadershipRole: "",
+    learningStyle: "",
+    strengths: [],
+    preferredCareer: "",
+  });
+  const [errors, setErrors] = useState({
+    olGrades: {
+      Mathematics: "",
+      Science: "",
+      Sinhala: "",
+      English: "",
+      Commerce: "",
+      ICT: "",
       History: "",
       Arts: "",
       Drama: "",
@@ -64,10 +85,21 @@ const ALStreamPrediction = () => {
           [child]: value,
         },
       }));
+      setErrors((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [child]: "",
+        },
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
         [field]: value,
+      }));
+      setErrors((prev) => ({
+        ...prev,
+        [field]: "",
       }));
     }
   };
@@ -79,16 +111,13 @@ const ALStreamPrediction = () => {
         ? prev[field].filter((item) => item !== value)
         : [...prev[field], value],
     }));
+    setErrors((prev) => ({
+      ...prev,
+      [field]: "",
+    }));
   };
 
   const grades = ["A", "B", "C", "S", "F", "N/A"];
-  const streams = [
-    "Bio Science",
-    "Physical Science / Maths",
-    "Commerce",
-    "Arts",
-    "Technology",
-  ];
   const subjects = [
     "Mathematics",
     "Science",
@@ -137,8 +166,169 @@ const ALStreamPrediction = () => {
     { title: "Preferences & Career", icon: Target, color: "purple" },
   ];
 
+  const isValid1 = () => {
+    // Initialize error messages
+    let Mathematics = "";
+    let Science = "";
+    let Sinhala = "";
+    let English = "";
+    let Commerce = "";
+    let ICT = "";
+    let Buddhism = "";
+    let History = "";
+    let Arts = "";
+    let Drama = "";
+    let Music = "";
+    let Dancing = "";
+
+    // Check each subject
+    if (!formData.olGrades.Mathematics)
+      Mathematics = "Mathematics is required.";
+    if (!formData.olGrades.Science) Science = "Science is required.";
+    if (!formData.olGrades.Sinhala) Sinhala = "Sinhala is required.";
+    if (!formData.olGrades.English) English = "English is required.";
+    if (!formData.olGrades.Commerce) Commerce = "Commerce is required.";
+    if (!formData.olGrades.ICT) ICT = "ICT is required.";
+    if (!formData.olGrades.History) History = "History is required.";
+    if (!formData.olGrades.Arts) Arts = "Arts is required.";
+    if (!formData.olGrades.Drama) Drama = "Drama is required.";
+    if (!formData.olGrades.Music) Music = "Music is required.";
+    if (!formData.olGrades.Dancing) Dancing = "Dancing is required.";
+
+    // If any errors exist, set them in state and return false
+    if (
+      Mathematics ||
+      Science ||
+      Sinhala ||
+      English ||
+      Commerce ||
+      ICT ||
+      History ||
+      Arts ||
+      Drama ||
+      Music ||
+      Dancing
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        olGrades: {
+          Mathematics,
+          Science,
+          Sinhala,
+          English,
+          Commerce,
+          ICT,
+          History,
+          Arts,
+          Drama,
+          Music,
+          Dancing,
+        },
+      }));
+
+      return false;
+    }
+
+    // No errors
+    return true;
+  };
+
+  const isValid2 = () => {
+    let favoriteOLSubject = "";
+    let leastFavoriteOLSubject = "";
+    let participatedSports = "";
+    let sportsTypes = "";
+    let participatedClubs = "";
+
+    if (!formData.favoriteOLSubject) {
+      favoriteOLSubject = "Favorite O/L subject is required.";
+    }
+
+    if (!formData.leastFavoriteOLSubject) {
+      leastFavoriteOLSubject = "Favorite O/L subject is required.";
+    }
+
+    if (!formData.participatedSports) {
+      participatedSports = "Favorite O/L subject is required.";
+    }
+
+    if (formData.participatedSports === "Yes" && !formData.sportsTypes.length) {
+      sportsTypes = "Favorite O/L subject is required.";
+    }
+
+    if (!formData.participatedClubs) {
+      participatedClubs = "Favorite O/L subject is required.";
+    }
+
+    if (
+      favoriteOLSubject ||
+      leastFavoriteOLSubject ||
+      participatedSports ||
+      sportsTypes ||
+      participatedClubs
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        favoriteOLSubject,
+        leastFavoriteOLSubject,
+        participatedSports,
+        sportsTypes,
+        participatedClubs,
+      }));
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const isValid3 = () => {
+    let enjoysCreative = "";
+    let leadershipRole = "";
+    let learningStyle = "";
+    let strengths = "";
+    let preferredCareer = "";
+
+    if (!formData.enjoysCreative) {
+      enjoysCreative = "Favorite O/L subject is required.";
+    }
+
+    if (!formData.leadershipRole) {
+      leadershipRole = "Favorite O/L subject is required.";
+    }
+
+    if (!formData.learningStyle) {
+      learningStyle = "Favorite O/L subject is required.";
+    }
+
+    if (!formData?.strengths?.length) {
+      strengths = "Favorite O/L subject is required.";
+    }
+
+    if (!formData.preferredCareer) {
+      preferredCareer = "Favorite O/L subject is required.";
+    }
+
+    if (enjoysCreative || leadershipRole || learningStyle || preferredCareer) {
+      setErrors((prev) => ({
+        ...prev,
+        enjoysCreative,
+        leadershipRole,
+        learningStyle,
+        strengths,
+        preferredCareer,
+      }));
+
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isValid3()) return;
+    setIsSubmitted(true);
 
     axios
       .post(`${config.API_URL}/predict`, {
@@ -167,7 +357,6 @@ const ALStreamPrediction = () => {
       .then((res) => {
         console.log(res.data.ranked_streams);
         setPrediction(res.data);
-        setIsSubmitted(true);
         setShowPrediction(true);
       })
       .catch((err) => console.log(err));
@@ -182,15 +371,21 @@ const ALStreamPrediction = () => {
 
   const nextSection = () => {
     if (currentSection < sections.length - 1) {
+      if (currentSection === 1) {
+        if (!isValid2()) return;
+      }
+      if (currentSection === 0) {
+        if (!isValid1()) return;
+      }
       setCurrentSection(currentSection + 1);
-      scrollToTop()
+      scrollToTop();
     }
   };
 
   const prevSection = () => {
     if (currentSection > 0) {
       setCurrentSection(currentSection - 1);
-      scrollToTop()
+      scrollToTop();
     }
   };
 
@@ -256,7 +451,7 @@ const ALStreamPrediction = () => {
 
   const renderPredictionResults = () => {
     if (!prediction) return null;
-    scrollToTop()
+    scrollToTop();
 
     const sortedStreams = Object.entries(prediction.ranked_streams)
       .sort(([, a], [, b]) => b - a)
@@ -406,7 +601,7 @@ const ALStreamPrediction = () => {
                     setShowPrediction(false);
                     setCurrentSection(0);
                     setPrediction(null);
-                    scrollToTop()
+                    scrollToTop();
                   }}
                   className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200 shadow-sm hover:shadow-md cursor-pointer"
                 >
@@ -507,6 +702,73 @@ const ALStreamPrediction = () => {
                 </table>
               </div>
             </div>
+            <div>
+              {errors.olGrades.Mathematics && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Mathematics}
+                </p>
+              )}
+
+              {errors.olGrades.Science && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Science}
+                </p>
+              )}
+
+              {errors.olGrades.Sinhala && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Sinhala}
+                </p>
+              )}
+
+              {errors.olGrades.English && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.English}
+                </p>
+              )}
+
+              {errors.olGrades.Commerce && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Commerce}
+                </p>
+              )}
+
+              {errors.olGrades.ICT && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.ICT}
+                </p>
+              )}
+
+              {errors.olGrades.History && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.History}
+                </p>
+              )}
+
+              {errors.olGrades.Arts && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Arts}
+                </p>
+              )}
+
+              {errors.olGrades.Drama && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Drama}
+                </p>
+              )}
+
+              {errors.olGrades.Music && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Music}
+                </p>
+              )}
+
+              {errors.olGrades.Dancing && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.olGrades.Dancing}
+                </p>
+              )}
+            </div>
           </div>
         );
 
@@ -539,6 +801,9 @@ const ALStreamPrediction = () => {
                   </select>
                   <ChevronDown className="absolute right-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
                 </div>
+                {errors.favoriteOLSubject && (
+                  <p className="text-red-500 text-sm mt-1">This is required</p>
+                )}
               </div>
 
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
@@ -569,12 +834,19 @@ const ALStreamPrediction = () => {
                   </select>
                   <ChevronDown className="absolute right-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
                 </div>
+                {errors.leastFavoriteOLSubject && (
+                  <p className="text-red-500 text-sm mt-1">This is required</p>
+                )}
               </div>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
               <label className="block text-sm font-semibold text-gray-700 mb-4">
                 Did you participate in sports during your school years? *
+                <br />
+                <span className="text-sm text-gray-500 font-normal">
+                  ඔබ පාසල් කාලය තුළ ක්‍රීඩා වලට සහභාගී වුණාද?
+                </span>
               </label>
               <div className="flex gap-6 mb-6">
                 {["Yes", "No"].map((option) => (
@@ -596,11 +868,18 @@ const ALStreamPrediction = () => {
                   </label>
                 ))}
               </div>
+              {errors.participatedSports && (
+                <p className="text-red-500 text-sm mt-1">This is required</p>
+              )}
 
               {formData.participatedSports === "Yes" && (
                 <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    Which sports did you participate in?
+                    Which sports did you participate in? *
+                    <br />
+                    <span className="text-sm text-gray-500 font-normal">
+                      ඔබ සහභාගී වූයේ කුමන ක්‍රීඩාවලටද?
+                    </span>
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {sports.map((sport) => (
@@ -621,6 +900,11 @@ const ALStreamPrediction = () => {
                       </label>
                     ))}
                   </div>
+                  {errors.sportsTypes && (
+                    <p className="text-red-500 text-sm mt-1">
+                      This is required
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -628,6 +912,10 @@ const ALStreamPrediction = () => {
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
               <label className="block text-sm font-semibold text-gray-700 mb-4">
                 Did you participate in any clubs or societies? *
+                <br />
+                <span className="text-sm text-gray-500 font-normal">
+                  ඔබ කිසියම් සමාජ කටයුතු හෝ සමිතියකට සහභාගී වී තිබේද?
+                </span>
               </label>
               <div className="flex gap-6">
                 {["Yes", "No"].map((option) => (
@@ -649,6 +937,9 @@ const ALStreamPrediction = () => {
                   </label>
                 ))}
               </div>
+              {errors.participatedClubs && (
+                <p className="text-red-500 text-sm mt-1">This is required</p>
+              )}
             </div>
           </div>
         );
@@ -660,6 +951,10 @@ const ALStreamPrediction = () => {
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <label className="block text-sm font-semibold text-gray-700 mb-4">
                   Do you enjoy creative subjects? *
+                  <br />
+                  <span className="text-sm text-gray-500 font-normal">
+                    ඔබ නිර්මාණාත්මක විෂයයන් රස විඳිනවාද?
+                  </span>
                 </label>
                 <div className="flex gap-6">
                   {["Yes", "No"].map((option) => (
@@ -681,11 +976,18 @@ const ALStreamPrediction = () => {
                     </label>
                   ))}
                 </div>
+                {errors.enjoysCreative && (
+                  <p className="text-red-500 text-sm mt-1">This is required</p>
+                )}
               </div>
 
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <label className="block text-sm font-semibold text-gray-700 mb-4">
                   Did you hold any leadership roles in school? *
+                  <br />
+                  <span className="text-sm text-gray-500 font-normal">
+                    ඔබ පාසලේදී නායකත්ව භූමිකාවන් ඉටු කළාද?
+                  </span>
                 </label>
                 <div className="flex gap-6">
                   {["Yes", "No"].map((option) => (
@@ -707,12 +1009,19 @@ const ALStreamPrediction = () => {
                     </label>
                   ))}
                 </div>
+                {errors.leadershipRole && (
+                  <p className="text-red-500 text-sm mt-1">This is required</p>
+                )}
               </div>
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
               <label className="block text-sm font-semibold text-gray-700 mb-4">
                 What is your preferred learning style? *
+                <br />
+                <span className="text-sm text-gray-500 font-normal">
+                  ඔබ කැමති ඉගෙනුම් විලාසය කුමක්ද?
+                </span>
               </label>
               <div className="flex gap-6">
                 {["More theory", "More practical / Calculations"].map(
@@ -736,11 +1045,18 @@ const ALStreamPrediction = () => {
                   )
                 )}
               </div>
+              {errors.learningStyle && (
+                <p className="text-red-500 text-sm mt-1">This is required</p>
+              )}
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
               <label className="block text-sm font-semibold text-gray-700 mb-4">
                 Which skills do you consider your strengths? *
+                <br />
+                <span className="text-sm text-gray-500 font-normal">
+                  ඔබේ ශක්තීන් ලෙස ඔබ සලකන්නේ කුමන කුසලතාද?
+                </span>
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {skills.map((skill) => (
@@ -759,11 +1075,18 @@ const ALStreamPrediction = () => {
                   </label>
                 ))}
               </div>
+              {errors.strengths && (
+                <p className="text-red-500 text-sm mt-1">This is required</p>
+              )}
             </div>
 
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
               <label className="block text-sm font-semibold text-gray-700 mb-3">
                 What is your most preferred career field? *
+                <br />
+                <span className="text-sm text-gray-500 font-normal">
+                  ඔබ වඩාත්ම කැමති වෘත්තීය ක්ෂේත්‍රය කුමක්ද?
+                </span>
               </label>
               <div className="relative">
                 <select
@@ -782,6 +1105,9 @@ const ALStreamPrediction = () => {
                 </select>
                 <ChevronDown className="absolute right-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
               </div>
+              {errors.preferredCareer && (
+                <p className="text-red-500 text-sm mt-1">This is required</p>
+              )}
             </div>
           </div>
         );
